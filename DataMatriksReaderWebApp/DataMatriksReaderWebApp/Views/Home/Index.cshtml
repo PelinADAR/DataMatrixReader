@@ -1,0 +1,113 @@
+﻿<div class="card card-secondary">
+    <div class="card-header bg-primary text-white">
+        <h3 class="card-title">DataMatriks Reader</h3>
+    </div>
+    <form asp-controller="Home" asp-action="UploadImage" method="post" enctype="multipart/form-data" id="uploadForm">
+        <div class="card-body">
+            <div class="row mb-3 align-items-center">
+                <div class="col-md-3 text-right">
+                    <label for="imageFile" class="font-weight-bold">Resim Dosyası Seçin:</label>
+                </div>
+                <div class="col-md-9">
+                    <input type="file" name="imageFile" class="form-control-file" id="imageFile">
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-center">
+            <button type="submit" value="Reader" class="btn btn-primary btn-lg">Barkod Yükle</button>
+        </div>
+    </form>
+
+    <div id="loadingMessage" class="text-center" style="display:none;">
+        <div class="spinner-border text-primary" role="status">
+            @* <span class="sr-only">Loading...</span> *@
+        </div>
+        <p>Resim işleniyor. Lütfen bekleyin...</p>
+    </div>
+
+    @if (ViewBag.DecodedText != null)
+    {
+        <div class="row mt-4">
+            <div class="col-md-12 text-center">
+                <label class="font-weight-bold"><b>Barkod Numarası:</b></label>
+                <h4 class="text-danger"><b>@ViewBag.DecodedText</b></h4>
+            </div>
+        </div>
+    }
+
+    @if (ViewBag.outputFilePath != null)
+    {
+        <div class="row mt-4">
+            <div class="col-md-12 text-center">
+                @* <h3>Okunan Barkod Bilgileri:</h3> *@
+                <a asp-controller="Home" asp-action="DownloadFile" class="btn btn-success btn-lg">TXT İNDİR</a>
+            </div>
+        </div>
+    }
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <div class="alert alert-danger text-center">@ViewBag.Error</div>
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    .card-secondary {
+        margin: 20px auto;
+        max-width: 800px; /* Increased width */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header {
+        text-align: center;
+    }
+
+    .form-control-file {
+        padding: 10px;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        transition: background-color 0.3s, border-color 0.3s;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+
+    .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+        transition: background-color 0.3s, border-color 0.3s;
+    }
+
+        .btn-success:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
+
+    .text-danger {
+        font-size: 1.5rem;
+    }
+
+    .alert {
+        margin-top: 20px;
+    }
+
+    .spinner-border {
+        width: 3rem;
+        height: 3rem;
+    }
+</style>
+
+<script>
+    document.getElementById('uploadForm').onsubmit = function () {
+        document.getElementById('loadingMessage').style.display = 'block';
+    };
+</script>
